@@ -1,8 +1,8 @@
 require("dotenv/config");
 const express = require("express");
 const openpgp = require("openpgp");
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const app = express();
 app.use(express.json());
 app.set("view engine", "ejs");
@@ -10,18 +10,18 @@ app.set("views", __dirname + "/views");
 app.get("/", (req, res) => {
   res.render("index");
 });
-app.get('/note/:id', async (req,res) => {
-    const id = req.params.id 
-    if(!id) {
-        return res.status(404).end()
-    }
-const data = await prisma.file.findFirst({
+app.get("/note/:id", async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    return res.status(404).end();
+  }
+  const data = await prisma.file.findFirst({
     where: {
-        id 
-    }
-})
-res.render(`file`, { data })
-})
+      id,
+    },
+  });
+  res.render(`file`, { data });
+});
 app.get("/api/genkey", (req, res) => {
   const email = req.query.email;
   const name =
