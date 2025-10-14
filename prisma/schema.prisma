@@ -6,13 +6,15 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
 model File {
- id   Int    @id @default(autoincrement())
-  encContent  String
-  pubUserId   String 
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  encContent String
+  pubUserId  String
+  createdAt  DateTime @default(now())
 }
