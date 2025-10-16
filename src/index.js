@@ -24,33 +24,33 @@ app.get("/note/:id", async (req, res) => {
   res.render(`file`, { data });
 });
 
-app.post('/api/create',async  (req,res) => {
-const body = req.body 
-let properData;
-try {
-properData = createSchema.parse(body)
-} catch (e) {
-  return res.status(422).json({ error: e.message })
-}
-try {
-  const birth = await prisma.file.create({
-    data: {
-      encContent: properData.content,
-      pubUserId: properData.pubKey,
-      title: properData.title
-    }
-  })
-  res.status(201).json({
-    message: "OK CREATED"
-  })
-} catch (e) {
-  return res.status(500).json({ message: e.message })
-}
-})
+app.post("/api/create", async (req, res) => {
+  const body = req.body;
+  let properData;
+  try {
+    properData = createSchema.parse(body);
+  } catch (e) {
+    return res.status(422).json({ error: e.message });
+  }
+  try {
+    const birth = await prisma.file.create({
+      data: {
+        encContent: properData.content,
+        pubUserId: properData.pubKey,
+        title: properData.title,
+      },
+    });
+    res.status(201).json({
+      message: "OK CREATED",
+    });
+  } catch (e) {
+    return res.status(500).json({ message: e.message });
+  }
+});
 
-app.get('/create', (req,res) => {
-  res.render("create")
-})
+app.get("/create", (req, res) => {
+  res.render("create");
+});
 
 app.get("/api/genkey", (req, res) => {
   const email = req.query.email;
