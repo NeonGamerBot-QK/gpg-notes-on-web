@@ -40,6 +40,7 @@ app.post("/api/create", async (req, res) => {
         title: properData.title,
       },
     });
+
     res.status(201).json({
       message: "OK CREATED",
     });
@@ -68,6 +69,8 @@ app.get("/api/genkey", (req, res) => {
     });
 });
 
+
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server started on port " + (process.env.PORT || 3000));
 });
+
