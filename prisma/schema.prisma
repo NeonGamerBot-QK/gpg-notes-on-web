@@ -17,4 +17,5 @@ model File {
   encContent String
   pubUserId  String
   createdAt  DateTime @default(now())
+  title      String 
 }
