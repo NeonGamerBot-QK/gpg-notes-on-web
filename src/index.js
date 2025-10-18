@@ -10,11 +10,9 @@ app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 require("./api")(app, prisma);
 
-
 app.get("/", (req, res) => {
   res.render("index");
 });
-
 
 app.get("/note/:id", async (req, res) => {
   const id = req.params.id;
@@ -28,7 +26,6 @@ app.get("/note/:id", async (req, res) => {
   });
   res.render(`file`, { data });
 });
-
 
 app.get("/create", (req, res) => {
   res.render("create");
