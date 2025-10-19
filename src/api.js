@@ -7,10 +7,10 @@ module.exports = (app, prisma) => {
     const body = req.body;
     let properData;
     try {
-      console.log(body)
+      console.log(body);
       properData = createSchema.parse(body);
     } catch (e) {
-      console.error(e)
+      console.error(e);
       return res.status(422).json({ error: e.message });
     }
     try {
@@ -21,10 +21,10 @@ module.exports = (app, prisma) => {
           title: properData.title,
         },
       });
-      console.log(birth)
+      console.log(birth);
       res.status(201).json({
         message: "OK CREATED",
-        id: birth.id
+        id: birth.id,
       });
     } catch (e) {
       return res.status(500).json({ message: e.message });
