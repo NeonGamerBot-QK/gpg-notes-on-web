@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Note</title>
+    <title>Create Note</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <meta name="description" content="GPG notes,, but on the web.">
@@ -17,8 +17,11 @@
         <div class="hero-content text-center">
             <div class="max-w-md">
                 <h1 class="font-bold text-2xl mb-2">Encode a message</h1>
-                <div>
+                <div class="mb-4">
+                    <label>Content to encrypt:</label><br />
                     <textarea name="" id="contenttoencrypt"></textarea>
+                    <br />
+                    <button id="enc" class="btn btn-primary">Encrypt and create</button>
                 </div>
                 <div id="createkey"></div>
             </div>
@@ -27,8 +30,47 @@
 </body>
 <script src="./js/handle_create.js"></script>
 <script>
-
-
+    const encButton = document.getElementById('enc');
+    encButton.addEventListener('click', handleCreate);
+    async function handleCreate() {
+        const content = document.getElementById('contenttoencrypt').value;
+        // const keys 
+        let currentKeys = {
+            pub: localStorage.getItem("pubKey") || "",
+            priv: localStorage.getItem("privKey") || "",
+        };
+        if (!currentKeys.priv) {
+            alert("You need to create a keypair first!");
+            return;
+        }
+        const keyInfo = currentKeys.pub
+            ? await openpgp.readKey({ armoredKey: currentKeys.pub })
+            : null;
+        const privKeyInfo = currentKeys.priv
+            ? await openpgp.readPrivateKey({ armoredKey: currentKeys.priv })
+            : null;
+        const encrypted = await openpgp.encrypt({
+            message: await openpgp.createMessage({ text: content }),
+            encryptionKeys: keyInfo,
+        });
+        console.log(encrypted);
+        const subject = prompt("subject for this masterpiece:")
+        // Now, send the encrypted content to the server to create the note
+        fetch('/api/create', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: subject,
+                content: encrypted,
+                pubKey: currentKeys.pub,
+            })
+        }).then(r => r.json()).then(d => {
+            window.location.pathname = "/note/" + d.id;
+            // alert("Note created! ID: " + d.id);
+        })
+    }
 </script>
 
 </html>

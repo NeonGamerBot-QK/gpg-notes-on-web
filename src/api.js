@@ -7,8 +7,10 @@ module.exports = (app, prisma) => {
     const body = req.body;
     let properData;
     try {
+      console.log(body)
       properData = createSchema.parse(body);
     } catch (e) {
+      console.error(e)
       return res.status(422).json({ error: e.message });
     }
     try {
@@ -19,28 +21,41 @@ module.exports = (app, prisma) => {
           title: properData.title,
         },
       });
-
+      console.log(birth)
       res.status(201).json({
         message: "OK CREATED",
+        id: birth.id
       });
     } catch (e) {
       return res.status(500).json({ message: e.message });
     }
   });
 
-  app.get("/api/genkey", (req, res) => {
+  app.get("/api/genkey", async (req, res) => {
     const email = req.query.email;
     const name =
       req.query.name ||
       Math.random().toFixed(20).toString().split(".")[1].slice(0, 7);
-    openpgp
-      .generateKey({
-        userIDs: [{ name, email }],
-        curve: "ed25519",
-        passphrase: req.query.passphrase,
-      })
-      .then((d) => {
-        res.json(d);
-      });
+    try {
+      await openpgp
+        .generateKey({
+          userIDs: [{ name, email }],
+          curve: "ed25519",
+          passphrase: req.query.passphrase,
+        })
+        .then((d) => {
+          res.json(d);
+        });
+    } catch (e) {
+      await openpgp
+        .generateKey({
+          userIDs: [{ name: "error: umade a bad key or smt" }],
+          curve: "ed25519",
+          passphrase: req.query.passphrase,
+        })
+        .then((d) => {
+          res.json(d);
+        });
+    }
   });
 };

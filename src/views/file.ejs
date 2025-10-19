@@ -15,15 +15,22 @@
 <body data-theme="dark">
     <div class="hero bg-base-200 min-h-screen">
         <div class="hero-content text-center">
-            <div class="max-w-md">
+            <div class="max-w-xl">
+                <h1 class="font-bold text-3xl mb-2">Encrypted note</h1>
+                <p>Subject: <%- data.title -%></p>
+                <br>
+                <textarea class="p-2" cols="60" rows="10" readonly><%= data.encContent.trim() %></textarea>
                 <div>
-                    <%- data.encContent %>
+                    <span>Created at: <%= data.createdAt.toString() %> </span>
+                    <a href="data:text/plain;base64,<%=Buffer.from(data.pubUserId).toString('base64')%>"
+                        download="users_pubkey.pub" class="btn">Download users public key</a>
                 </div>
+                <br>
                 <div id="createkey"></div>
             </div>
         </div>
     </div>
 </body>
-<script src="./js/handle_create.js"></script>
+<script src="/js/handle_create.js"></script>
 
 </html>

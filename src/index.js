@@ -9,19 +9,19 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 require("./api")(app, prisma);
-
+app.use(express.json())
 app.get("/", (req, res) => {
   res.render("index");
 });
 
 app.get("/note/:id", async (req, res) => {
   const id = req.params.id;
-  if (!id) {
+  if (!id || isNaN(id)) {
     return res.status(404).end();
   }
   const data = await prisma.file.findFirst({
     where: {
-      id,
+      id: parseInt(id),
     },
   });
   res.render(`file`, { data });
