@@ -100,15 +100,14 @@ Take gpg notes online and share them later!
    ```sh
    git clone https://github.com/NeonGamerBot-QK/gpg-notes-on-web.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    pnpm install
    ```
-4. populate .env with .env.example
-5. run `prisma db push` and `prisma db generate`
-6. run `pnpm start` :)
+3. populate .env with .env.example
+4. run `prisma db push` and `prisma db generate`
+5. run `pnpm start` :)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- ROADMAP -->
 
