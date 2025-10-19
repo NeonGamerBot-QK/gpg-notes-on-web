@@ -9,7 +9,7 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 require("./api")(app, prisma);
-app.use(express.json())
+app.use(express.json());
 app.get("/", (req, res) => {
   res.render("index");
 });
